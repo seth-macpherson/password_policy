@@ -22,9 +22,14 @@ class PasswordPolicy
 
     # Define accessors for rule values
     @rules.each do |id, rule|
+
       define_singleton_method(id)       {       rule[:value] }
       define_singleton_method("#{id}=") { |val| rule[:value] = val }
+
+      # Employ only those rules with criteria supplied
+      @rules.delete(id) unless rules.has_key?(id)
     end
+
 
     # Merge provided rules values with defaults
     rules.each do |rule, val|
